@@ -107,6 +107,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = __importDefault(require("./module/routes"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -140,14 +141,20 @@ app.options('*', (0, cors_1.default)(corsOptions));
 app.use(express_1.default.json({ limit: '20mb' })); // Prevent large payloads
 app.use(express_1.default.urlencoded({ extended: true, limit: '20mb' }));
 app.use((0, cookie_parser_1.default)());
-// API Response Compression (Install 'compression' package)
+app.use((0, express_fileupload_1.default)({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+}));
 const compression_1 = __importDefault(require("compression"));
 app.use((0, compression_1.default)());
+// API Response Compression (Install 'compression' package)
 // Cache Headers Middleware
 app.use((req, res, next) => {
     res.set('Cache-Control', 'public, max-age=300'); // 5min cache for mobile
     next();
 });
+// Middleware
 // Routes
 app.use('/api/v1', routes_1.default);
 // // Test routes
