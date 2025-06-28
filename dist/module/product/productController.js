@@ -41,77 +41,77 @@ const productService = __importStar(require("./productService"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const productModel_1 = __importDefault(require("./productModel"));
 // Configure Cloudinary
-cloudinary_1.default.v2.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-// export const createProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     const { title, description, category, price, stock, brand, sizes, colors, tags,images } = req.body;
-//     const productData = {
-//       title,
-//       description,
-//       category,
-//       price,
-//       stock,
-//       brand,
-//       sizes,
-//       colors,
-//       tags,
-//       images
-//     };
-//     const product = await productService.createProduct(productData);
-//     res.status(201).json({ success: true, message: "Product created", data: product });
-//     // console.log(product);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+// cloudinary.v2.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 const createProduct = async (req, res, next) => {
     try {
-        // Get text fields from request body
-        const { title, description, category, price, stock, brand, sizes, colors, tags } = req.body;
-        // Handle image uploads
-        if (!req.files || !req.files.images) {
-            throw new Error('No images uploaded');
-        }
-        // Process multiple images
-        const files = Array.isArray(req.files.images)
-            ? req.files.images
-            : [req.files.images];
-        const imageUrls = [];
-        for (const file of files) {
-            const result = await cloudinary_1.default.v2.uploader.upload(file.tempFilePath, {
-                folder: 'ecommerce-products',
-            });
-            imageUrls.push(result.secure_url);
-        }
-        // Create product data
+        const { title, description, category, price, stock, brand, sizes, colors, tags, images } = req.body;
         const productData = {
             title,
             description,
             category,
-            price: Number(price),
-            stock: Number(stock),
+            price,
+            stock,
             brand,
-            sizes: JSON.parse(sizes),
-            colors: JSON.parse(colors),
-            tags: JSON.parse(tags),
-            images: imageUrls,
+            sizes,
+            colors,
+            tags,
+            images
         };
-        const product = await productModel_1.default.create(productData);
-        res.status(201).json({
-            success: true,
-            data: product,
-        });
+        const product = await productService.createProduct(productData);
+        res.status(201).json({ success: true, message: "Product created", data: product });
+        // console.log(product);
     }
     catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ success: false, error: error.message });
+        next(error);
     }
 };
 exports.createProduct = createProduct;
+// export const createProduct = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     // Get text fields from request body
+//     const { title, description, category, price, stock, brand, sizes, colors, tags } = req.body;
+//     // Handle image uploads
+//     if (!req.files || !req.files.images) {
+//       throw new Error('No images uploaded');
+//     }
+//     // Process multiple images
+//     const files = Array.isArray(req.files.images) 
+//       ? req.files.images 
+//       : [req.files.images];
+//     const imageUrls: string[] = [];
+//     for (const file of files) {
+//       const result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+//         folder: 'ecommerce-products',
+//       });
+//       imageUrls.push(result.secure_url);
+//     }
+//     // Create product data
+//     const productData: Partial<IProduct> = {
+//       title,
+//       description,
+//       category,
+//       price: Number(price),
+//       stock: Number(stock),
+//       brand,
+//       sizes: JSON.parse(sizes),
+//       colors: JSON.parse(colors),
+//       tags: JSON.parse(tags),
+//       images: imageUrls,
+//     };
+//     const product = await Product.create(productData);
+//     res.status(201).json({
+//       success: true,
+//       data: product,
+//     });
+//   } catch (error:any) {
+//     console.error('Error:', error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
 const getProducts = async (req, res, next) => {
     try {
         const { search, category, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
