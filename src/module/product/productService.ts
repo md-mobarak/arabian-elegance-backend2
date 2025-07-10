@@ -35,6 +35,9 @@ export const getProducts = async (
   };
   
 
+export const getProductByCategory = async (category: string) => {
+    return await Product.find({category:category});
+};
 export const getProductById = async (id: string) => {
     return await Product.findById(id);
 };

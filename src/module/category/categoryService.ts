@@ -21,7 +21,7 @@ getAllCategories: async (page: number, limit: number, search?: string, ) => {
     const categories = await Category.find(query)
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
   
     const totalCategories = await Category.countDocuments(query);
   

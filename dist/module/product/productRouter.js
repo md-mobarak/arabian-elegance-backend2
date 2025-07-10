@@ -11,6 +11,7 @@ const multer_1 = __importDefault(require("../../middlewares/multer"));
 const router = express_1.default.Router();
 router.post("/", authMiddleware_1.protect, (0, authMiddleware_1.authorize)("admin", "manager"), multer_1.default.array("images", 5), productController_1.productControllers.createProduct);
 router.get("/", productController_1.productControllers.getProducts);
+// router.get("/:category", productControllers);
 router.get("/:id", productController_1.productControllers.getProductById);
 router.put("/:id", authMiddleware_1.protect, (0, authMiddleware_1.authorize)("admin", "manager"), multer_1.default.array("images", 5), productController_1.productControllers.updateProduct);
 router.delete("/:id", authMiddleware_1.protect, (0, authMiddleware_1.authorize)("admin"), productController_1.productControllers.deleteProduct);

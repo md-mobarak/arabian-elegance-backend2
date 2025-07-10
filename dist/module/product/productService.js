@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.getProductById = exports.getProducts = exports.createProduct = void 0;
+exports.deleteProduct = exports.updateProduct = exports.getProductById = exports.getProductByCategory = exports.getProducts = exports.createProduct = void 0;
 const productModel_1 = __importDefault(require("./productModel"));
 const createProduct = async (data) => {
     return await productModel_1.default.create(data);
@@ -30,6 +30,10 @@ const getProducts = async (search, category, minPrice, maxPrice, page = 1, limit
     return { products, total, totalPages: Math.ceil(total / limit) };
 };
 exports.getProducts = getProducts;
+const getProductByCategory = async (category) => {
+    return await productModel_1.default.find({ category: category });
+};
+exports.getProductByCategory = getProductByCategory;
 const getProductById = async (id) => {
     return await productModel_1.default.findById(id);
 };

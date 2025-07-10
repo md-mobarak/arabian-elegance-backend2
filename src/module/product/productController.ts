@@ -203,11 +203,11 @@ export const deleteProduct = async (req: any, res: Response) => {
     const { id } = req.params;
     
     // Delete from Cloudinary
-    const product:any = await Product.findById(id);
-    for (const imageUrl of product.images) {
-      const publicId = imageUrl.split('/').pop().split('.')[0];
-      await cloudinary.v2.uploader.destroy(`ecommerce-products/${publicId}`);
-    }
+    // const product:any = await Product.findById(id);
+    // for (const imageUrl of product.images) {
+    //   const publicId = imageUrl.split('/').pop().split('.')[0];
+    //   await cloudinary.v2.uploader.destroy(`ecommerce-products/${publicId}`);
+    // }
 
     await Product.findByIdAndDelete(id);
     res.json({ message: 'Product deleted' });

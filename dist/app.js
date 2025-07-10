@@ -115,6 +115,7 @@ app.use(express_1.default.json());
 const allowedOrigins = [
     'https://arabian-elegance-03.vercel.app',
     'https://arabian-elegance-03.vercel.app',
+    'https://arabian-elegance-client.vercel.app',
     '*',
     'https://arabianelegancebd.com',
     'http://localhost:3000',
